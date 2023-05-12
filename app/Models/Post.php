@@ -13,6 +13,9 @@ class Post extends Model
     //everything can be mass asigned except the id
     protected $guarded = ['id'];
 
+    //reduces the amount of queries as they grab them by category and author
+    protected $with = ['category', 'author'];
+
     //elequent relationship
     public function category(){
         //may relationships hasOne, has Many, belongsTo, belongsToMany

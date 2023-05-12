@@ -4,7 +4,7 @@
     <article>
         <h1>{!! $post->title !!}</h1>
         <p>
-            By <a href='/authors/posts/categories/{{$post->author->id}}'>{{$post->author->name}}</a> in <a href='/categories/post/{{ $post->category->slug }}'>{{ $post->category->name }}</a>
+            By <a href='/authors/posts/categories/{{$post->author->username}}'>{{$post->author->name}}</a> in <a href='/categories/post/{{ $post->category->slug }}'>{{ $post->category->name }}</a>
         </p>
 
         <div>

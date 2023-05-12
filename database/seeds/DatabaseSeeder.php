@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Faker\Factory as Faker;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,10 +20,12 @@ class DatabaseSeeder extends Seeder
     {
         Category::truncate();
         Post::truncate();
+        $faker = Faker::create();
 
         $user = User::create( 
             [
                 'name' => 'KatieDoherty',
+                'username' => $faker->unique()->userName,
                 'email' => Str::random(10).'@gmail.com',
                 'password' => Hash::make('password'),
             ]

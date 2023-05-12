@@ -1,17 +1,29 @@
 <x-layout>
+    @include ('_post-header')
+
+    <main class="max-w-6xl mx-auto mt-6 lg:mt-20 space-y-6">
+        <x-post-featured-card :post="$posts[0]" />
+
+        <div class="lg:grid lg:grid-cols-6">
+            @foreach ($posts->skip(1) as $post)
+                <x-post-card :post="$post" class="col-span-2"/>
+            @endforeach
+        </div>
+
+    </main>
 <!--go through each post -->
 <!--when the layout.blade file is in the component we can use x-layout and x-slot to call this layout-->
-    @foreach ($posts as $post)
+    {{-- @foreach ($posts as $post)
         <article>
             <h1><a href="/posts/{{$post->slug}}">{{ $post->title }}</a></h1>
             <p>
-                By <a href='/authors/posts/categories/{{$post->author->id}}'>{{$post->author->name}}</a> in <a href='/categories/post/{{ $post->category->slug }}'>{{ $post->category->name }}</a>
+                By <a href='/authors/posts/categories/{{$post->author->username}}'>{{$post->author->name}}</a> in <a href='/categories/post/{{ $post->category->slug }}'>{{ $post->category->name }}</a>
             </p>
         </article>
 
         <div>
             {{ $post->excerpt }}
         </div>
-    @endforeach
+    @endforeach --}}
 </x-layout>
 
