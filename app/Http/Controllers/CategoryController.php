@@ -12,7 +12,9 @@ class CategoryController extends Controller
     {
         $category = Category::where('slug', $slug)->firstOrFail();
         return view('posts', [
-            'posts' => $category->posts
+            'posts' => $category->posts,
+            'currentCategory' => $category,
+            'categories' => Category::all()
         ]);
     }
 }

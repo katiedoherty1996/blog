@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\File;
-use App\Models\User;
+use App\Models\Category;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,7 +41,8 @@ Route::get('/categories/post/{slug}', [CategoryController::class, 'show'])->name
 
 Route::get('/authors/posts/categories/{author:username}', function(User $author){
     return view('posts', [
-        'posts' => $author->posts
+        'posts' => $author->posts,
+        'categories' => Category::all()
     ]);
 });
 

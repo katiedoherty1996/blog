@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Post;
 
 class HomeController extends Controller
@@ -12,7 +13,8 @@ class HomeController extends Controller
         $posts = Post::latest('created_at')->with('category', 'author')->get();
  
         return view('posts', [
-            'posts' => $posts
+            'posts' => $posts,
+            'categories' => Category::all()
         ]);
 
     }

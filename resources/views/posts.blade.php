@@ -2,14 +2,7 @@
     @include ('_post-header')
 
     <main class="max-w-6xl mx-auto mt-6 lg:mt-20 space-y-6">
-        <x-post-featured-card :post="$posts[0]" />
-
-        <div class="lg:grid lg:grid-cols-6">
-            @foreach ($posts->skip(1) as $post)
-                <x-post-card :post="$post" class="col-span-2"/>
-            @endforeach
-        </div>
-
+        <x-posts-grid :posts="$posts" />
     </main>
 <!--go through each post -->
 <!--when the layout.blade file is in the component we can use x-layout and x-slot to call this layout-->
