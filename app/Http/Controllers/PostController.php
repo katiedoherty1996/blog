@@ -12,7 +12,7 @@ class PostController extends Controller
         $post = Post::where('slug', $slug)->firstOrFail();
         return view('post', [
             'post' => $post,
-            'categories' => Category::all()
+            'currentCategory' => null,
         ]);
     }
 }

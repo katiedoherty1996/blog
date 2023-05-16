@@ -10,11 +10,16 @@ class HomeController extends Controller
     public function index()
     {
         //latest function orders each of the posts from the latest created at the top
-        $posts = Post::latest('created_at')->with('category', 'author')->get();
- 
+        // $posts = Post::latest('created_at')->with('category', 'author')->get();
+
+        // $posts = Post::latest();
+
+        //we are calling a query scope from Post class and passing in the array of the search
+        $posts = Post::latest()->filter(request(['search', 'category']))->get();
+
         return view('posts', [
             'posts' => $posts,
-            'categories' => Category::all()
+            'currentCategory' => Category::firstWhere('slug', request('category')),
         ]);
 
     }

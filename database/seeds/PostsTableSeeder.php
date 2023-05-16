@@ -29,8 +29,8 @@ class PostsTableSeeder extends Seeder
                 'category_id' => $category->id,
                 'slug' => $faker->slug,
                 'title' => $faker->sentence,
-                'excerpt' => $faker->sentence,
-                'body' => $faker->paragraph
+                'excerpt' => '<p>' . implode('<p></p>' , $faker->paragraphs(2)) . '</p>',
+                'body' => '<p>' . implode('<p></p>' , $faker->paragraphs(6)) . '</p>'
             ]);
         }
     }

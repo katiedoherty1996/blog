@@ -16,6 +16,47 @@ class Post extends Model
     //reduces the amount of queries as they grab them by category and author
     protected $with = ['category', 'author'];
 
+    //Query Scopes
+    //first argument will always be passed as your query builder so you never have to pass it
+    public function scopeFilter($query, array $filters) {
+
+        //when we have a search filter then trigger this function
+        $query->when($filters['search'] ?? false, function ($query, $search) {
+            //sql syntax find only those with a title of what was searched for
+            $query
+            ->where('title', 'like', '%' . $search . '%')
+            ->orWhere('body', 'like', '%' . $search . '%');
+
+        });
+
+        //when we have something for the category that means we want to grab only the posts with the given category
+        //not easy cause there is no refernce to the category slug on the post table
+        $query->when($filters['category'] ?? false, function ($query, $category) {
+            //sql syntax find only those with a title of what was searched for
+            // $query
+            // ->whereExists(function ($query) use ($category){
+            //     $query->from('categories')
+            //         ->whereColumn('categories.id', 'posts.category_id')
+            //         ->where('categories.slug', $category);
+            // });
+
+            //use the whereHas method - where a post has a specific category.
+            //give me the posts that has a category specifically the ones that match the category the user has requested
+            $query->whereHas('category', function($query) use ($category) {
+                $query->where('slug', $category);
+            });
+
+        });
+
+        // if($filters['search'] ?? false){
+        //     //sql syntax find only those with a title of what was searched for
+        //     $query
+        //     ->where('title', 'like', '%' . request('search') . '%')
+        //     ->orWhere('body', 'like', '%' . request('search') . '%');
+        // }
+
+    }
+
     //elequent relationship
     public function category(){
         //may relationships hasOne, has Many, belongsTo, belongsToMany

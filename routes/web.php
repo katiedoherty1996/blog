@@ -5,6 +5,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\File;
 use App\Models\Category;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,16 +34,15 @@ use App\Models\Category;
 //     ]);
 // });
 
-Route::get('/', 'HomeController@index');
+Route::get('/', 'HomeController@index')->name('home');
 
 Route::get('/posts/{slug}', [PostController::class, 'show'])->name('posts.show');
 
-Route::get('/categories/post/{slug}', [CategoryController::class, 'show'])->name('category.posts');
+// Route::get('/categories/post/{slug}', [CategoryController::class, 'show'])->name('category.posts');
 
 Route::get('/authors/posts/categories/{author:username}', function(User $author){
     return view('posts', [
         'posts' => $author->posts,
-        'categories' => Category::all()
     ]);
 });
 
