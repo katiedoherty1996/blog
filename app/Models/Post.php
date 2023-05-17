@@ -20,15 +20,20 @@ class Post extends Model
     //first argument will always be passed as your query builder so you never have to pass it
     public function scopeFilter($query, array $filters) {
 
+        //SEARCH BY TITLE OR BODY
         //when we have a search filter then trigger this function
         $query->when($filters['search'] ?? false, function ($query, $search) {
             //sql syntax find only those with a title of what was searched for
-            $query
-            ->where('title', 'like', '%' . $search . '%')
-            ->orWhere('body', 'like', '%' . $search . '%');
+            //wrapping the query in a where condition so that it searches for the title or body in one where condition rather then 2
+            $query->where(function($query) use ($search){
+                $query
+                ->where('title', 'like', '%' . $search . '%')
+                ->orWhere('body', 'like', '%' . $search . '%');
+            });
 
         });
 
+        //SEARCH BY CATEGORY
         //when we have something for the category that means we want to grab only the posts with the given category
         //not easy cause there is no refernce to the category slug on the post table
         $query->when($filters['category'] ?? false, function ($query, $category) {
@@ -55,6 +60,15 @@ class Post extends Model
         //     ->orWhere('body', 'like', '%' . request('search') . '%');
         // }
 
+        //SEARCH BY AUTHOR
+        $query->when($filters['author'] ?? false, function ($query, $author) {
+            //what is the relationship between a post and an author 
+            //an author has a relationship so we use whereHas
+            $query->whereHas('author', function($query) use ($author) {
+                //where the username matches the author
+                $query->where('username', $author);
+            });
+        });
     }
 
     //elequent relationship

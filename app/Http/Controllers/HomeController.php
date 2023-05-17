@@ -15,11 +15,19 @@ class HomeController extends Controller
         // $posts = Post::latest();
 
         //we are calling a query scope from Post class and passing in the array of the search
-        $posts = Post::latest()->filter(request(['search', 'category']))->get();
+        //paginate will add various pages to the application and only show 6 posts per page and the withQueryString() 
+        //will keep the users entered search filters
+        $posts = Post::latest()->filter(request(['search', 'category', 'author']))->paginate(6)->withQueryString();
+        $currentCategory = Category::firstWhere('slug', request('category'));
 
-        return view('posts', [
+        // return view('posts.index', [
+        //     'posts' => $posts,
+        //     'currentCategory' => $currentCategory,
+        // ]);
+
+        return view('posts.index', [
             'posts' => $posts,
-            'currentCategory' => Category::firstWhere('slug', request('category')),
+            'currentCategory' => $currentCategory,
         ]);
 
     }

@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
-use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\File;
 use App\Models\Category;
 use App\Models\User;
@@ -38,13 +38,23 @@ Route::get('/', 'HomeController@index')->name('home');
 
 Route::get('/posts/{slug}', [PostController::class, 'show'])->name('posts.show');
 
+//creating a new user
+//middleware is a piece of logic that will run whenever a new request is made
+//oppportunity to inspect the logic and do something with it.
+//Only a guest can access this page
+Route::get('register', [RegisterController::class, 'create'])->middleware('guest');
+
+//create the route where we post to create the user
+Route::post('register', [RegisterController::class, 'store'])->middleware('guest');
+
+//WE DONT NEED ROUTES FOR CATEGORY OR AUTHOR ANYMORE BECAUSE WE ARE SEARCHING FOR THEM BY SEARCH. CHECK HOMECONTROLLER.PHP
 // Route::get('/categories/post/{slug}', [CategoryController::class, 'show'])->name('category.posts');
 
-Route::get('/authors/posts/categories/{author:username}', function(User $author){
-    return view('posts', [
-        'posts' => $author->posts,
-    ]);
-});
+// Route::get('/authors/posts/categories/{author:username}', function(User $author){
+//     return view('posts.index', [
+//         'posts' => $author->posts,
+//     ]);
+// });
 
 // Route::get('categories/{slug}', [CategoryController::class, 'show'])->name('categories.show');
 

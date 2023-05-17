@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'username', 'email', 'password',
     ];
 
     /**
@@ -36,6 +36,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    //eloqouent mutator, this will run when we set the password
+    //ANY TIME THE PASSWORD IS SET IT WILL RUN TTHROUGH THIS FUNCTION AUTOMATICALLY WITHOUGHT CALLING IT
+    public function setPasswordAttribute($password){
+        //whatever i set in this function is what will be saved to the database
+        $this->attributes['password'] = bcrypt($password);
+    }
 
     //eleqouent relationship, user can have many posts
     public function posts(){
