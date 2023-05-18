@@ -3,9 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegisterController;
-use Illuminate\Support\Facades\File;
-use App\Models\Category;
-use App\Models\User;
+use App\Http\Controllers\SessionsController;
+use App\Http\Controllers\PostCommentsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +37,9 @@ Route::get('/', 'HomeController@index')->name('home');
 
 Route::get('/posts/{slug}', [PostController::class, 'show'])->name('posts.show');
 
+//create the route to log in
+Route::post('posts/{post:slug}/comments', [PostCommentsController::class, 'store']);
+
 //creating a new user
 //middleware is a piece of logic that will run whenever a new request is made
 //oppportunity to inspect the logic and do something with it.
@@ -46,6 +48,16 @@ Route::get('register', [RegisterController::class, 'create'])->middleware('guest
 
 //create the route where we post to create the user
 Route::post('register', [RegisterController::class, 'store'])->middleware('guest');
+
+//create the route to log out
+Route::post('logout', [SessionsController::class, 'destroy'])->middleware('auth');
+
+//create the route to log in
+Route::post('sessions', [SessionsController::class, 'store'])->middleware('guest');
+
+
+//create the route to log out
+Route::get('login', [SessionsController::class, 'create'])->middleware('guest');
 
 //WE DONT NEED ROUTES FOR CATEGORY OR AUTHOR ANYMORE BECAUSE WE ARE SEARCHING FOR THEM BY SEARCH. CHECK HOMECONTROLLER.PHP
 // Route::get('/categories/post/{slug}', [CategoryController::class, 'show'])->name('category.posts');

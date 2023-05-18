@@ -1,10 +1,12 @@
 <?php
+namespace Database\Seeds;
 
 use Illuminate\Database\Seeder;
 use Database\Seeds\UserSeeder;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\User;
+use App\Models\Comment;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Faker\Factory as Faker;
@@ -20,6 +22,7 @@ class DatabaseSeeder extends Seeder
     {
         Category::truncate();
         Post::truncate();
+        Comment::truncate();
         $faker = Faker::create();
 
         $user = User::create( 

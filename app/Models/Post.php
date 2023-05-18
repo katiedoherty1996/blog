@@ -71,6 +71,11 @@ class Post extends Model
         });
     }
 
+    //eleqouent relationship, a post can have many comments
+    public function comments(){
+        return $this->hasMany(Comment::class);
+    }
+
     //elequent relationship
     public function category(){
         //may relationships hasOne, has Many, belongsTo, belongsToMany

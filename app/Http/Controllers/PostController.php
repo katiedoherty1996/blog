@@ -11,7 +11,7 @@ class PostController extends Controller
     {
         $post = Post::where('slug', $slug)->firstOrFail();
         $currentCategory = Category::firstWhere('slug', request('category'));
-        return view('post', [
+        return view('posts.show', [
             'post' => $post,
             'currentCategory' => $currentCategory,
         ]);
