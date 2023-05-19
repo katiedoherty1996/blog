@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
+
+    protected $guarded = [];
+    
     //eleqouent relationship, a post can have many comments
     public function post(){
         return $this->belongsTo(Post::class);//laravel will assume the column name is post_id by default cause that is the name of the function

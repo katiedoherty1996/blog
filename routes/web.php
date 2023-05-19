@@ -32,6 +32,23 @@ use App\Http\Controllers\PostCommentsController;
 //         'posts' => $category->posts
 //     ]);
 // });
+Route::get('ping', function() {
+    $mailchimp = new \MailchimpMarketing\ApiClient();
+
+    $mailchimp->setConfig([
+        'apiKey' => config('services.mailchimp.key'),
+        'server' => 'us21',
+        'curlOptions' => [
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false,
+        ],
+    ]);
+
+    $response = $mailchimp->ping->get();
+
+    print_r($response);
+    
+});
 
 Route::get('/', 'HomeController@index')->name('home');
 
