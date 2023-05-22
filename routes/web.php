@@ -1,10 +1,14 @@
 <?php
 
+// require_once '/path/to/MailchimpMarketing/vendor/autoload.php';
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionsController;
 use App\Http\Controllers\PostCommentsController;
+use App\Services\MailChimpNewsletter;
+use GuzzleHttp\Client;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,23 +36,33 @@ use App\Http\Controllers\PostCommentsController;
 //         'posts' => $category->posts
 //     ]);
 // });
-Route::get('ping', function() {
-    $mailchimp = new \MailchimpMarketing\ApiClient();
 
-    $mailchimp->setConfig([
-        'apiKey' => config('services.mailchimp.key'),
-        'server' => 'us21',
-        'curlOptions' => [
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_SSL_VERIFYHOST => false,
-        ],
-    ]);
+// Route::get('newsletter', function () {
 
-    $response = $mailchimp->ping->get();
+//     request()->validate(['email'=> 'required|email']);
 
-    print_r($response);
-    
-});
+//     $apiKey = '538f5f8b4729a5020cef4e49cb7e7f01-us21';
+//     $listId = '8934e6906e';
+//     $url = "https://us21.api.mailchimp.com/3.0/lists/{$listId}/members";
+
+//     $client = new Client([
+//         'verify' => false,
+//         'headers' => [
+//             'Authorization' => 'Bearer ' . $apiKey,
+//             'Content-Type' => 'application/json',
+//         ],
+//         'json' => [
+//             "email_address" => request('email'),
+//             "status" => "subscribed",
+//         ],
+//     ]);
+
+//     $client->post($url);
+
+//     return redirect('/')->with('success', 'You are now signed up for our newsletter!');
+// });
+
+Route::post('newsletter', NewsletterController::class);
 
 Route::get('/', 'HomeController@index')->name('home');
 
@@ -94,5 +108,8 @@ Route::get('login', [SessionsController::class, 'create'])->middleware('guest');
 //         'post' => $post
 //     ]);
 // });
+
+//ADMIN SECTION
+Route::get('admin/posts/create', [PostController::class, 'create']);
 
 
